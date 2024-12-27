@@ -1,14 +1,19 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import { actions } from 'astro:actions';
 import MainLayout from '../../layouts/MainLayout.astro';
-import { prisma } from '../../db';
+
+/**
+ * This Astro page generates the error:
+ * [ERROR] Astro.callAction is not a function
+ */
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const places = await prisma.place.findMany();
+  const { data } = await Astro.callAction(actions.getPlaces, {});
 
-  if (!places) throw new Error('Error trying to get places');
+  if (!data) throw new Error('Error trying to get places');
 
-  return places.map((place) => ({
+  return data.map((place) => ({
     params: {
       id: place.id,
     },
