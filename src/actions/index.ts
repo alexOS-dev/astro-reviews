@@ -1,4 +1,5 @@
-import { defineAction } from 'astro:actions';
-import { z } from 'astro:schema';
+import { getPlaces } from './places/get-places.action';
 
-export const server = {};
+export const server = {
+  getPlaces,
+};
