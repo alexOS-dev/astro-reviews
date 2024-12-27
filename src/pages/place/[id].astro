@@ -1,0 +1,24 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { actions } from 'astro:actions';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+export const getStaticPaths = (async () => {
+  const { data } = await Astro.callAction(actions.getPlaces, {});
+
+  if (!data) throw new Error('Error getting places');
+
+  return data.map((place) => ({
+    params: {
+      id: place.id,
+    },
+    props: { place },
+  }));
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+---
+
+<MainLayout>
+  <h1>Place ID: {id}</h1>
+</MainLayout>
