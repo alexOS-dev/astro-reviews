@@ -1,8 +1,11 @@
 ---
 import type { GetStaticPaths } from 'astro';
-
+import { Image } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
 import { prisma } from '../../db';
+
+import Star from '../../components/Star.astro';
+
 export const getStaticPaths = (async () => {
   const places = await prisma.place.findMany();
 
@@ -18,8 +21,31 @@ export const getStaticPaths = (async () => {
 
 const { id } = Astro.params;
 const { place } = Astro.props;
+
+const imageUrl = `/assets/images/${place.image}`;
 ---
 
 <MainLayout>
-  <h1 class='text-3xl font-extrabold'>ID: {id} {place.title}</h1>
+  <div class='grid grid-cols-2 gap-2'>
+    <div class='bg-white/80 p-5 rounded-xl'>
+      <h1 class='text-2xl font-extrabold'>#{id} {place.title}</h1>
+      <p>{place.description}</p>
+
+      <div class='flex flex-1'>
+        {Array.from({ length: Number(place.avg_rating) }).map((_) => <Star />)}
+      </div>
+
+      <!-- TODO: Server Island -->
+    </div>
+
+    <div>
+      <Image
+        src={imageUrl}
+        class='w-full h-96 object-cover rounded-xl'
+        width='800'
+        height='800'
+        alt={place.title}
+      />
+    </div>
+  </div>
 </MainLayout>
