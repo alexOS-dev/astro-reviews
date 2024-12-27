@@ -33,6 +33,7 @@ const imageUrl = `/assets/images/${place.image}`;
       </a>
       <div class='flex items-center mt-2.5 mb-5'>
         {Array.from({ length: +place.avg_rating }).map((_) => <Star />)}
+
         <span
           class='text-xs font-semibold mr-2 px-2.5 py-0.5 rounded bg-blue-200 text-blue-800 ml-3'
           >{place.avg_rating}</span
